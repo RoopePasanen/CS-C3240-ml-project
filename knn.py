@@ -42,8 +42,26 @@ print("Best k:", best_k)
 print("Training error:", train_errors[best_index])
 print("Validation error:", val_errors[best_index])
 
+#train model with best k
+clf_1 = KNeighborsClassifier(n_neighbors=best_k).fit(X_train_scaled, y_train)
 
-## need to plot
+#predict with validation set
+y_pred = clf_1.predict(X_val_scaled)
+accuracy = accuracy_score(y_val, y_pred)
+
+#confusion matrix
+cm = confusion_matrix(y_val, y_pred)
 
 
-## need to add conf mat
+
+#plotting
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=clf_1.classes_, yticklabels=clf_1.classes_)
+plt.title(f'Confusion Matrix (k-NN, k = {best_k})')
+plt.ylabel('True Label')
+plt.xlabel('Predicted Label')
+plt.show()
+
+#print
+print(accuracy)
+print(cm)
