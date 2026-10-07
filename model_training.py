@@ -27,10 +27,12 @@ X_test_scaled = scaler.transform(X_test)
 #Train the model
 clf_1 = LogisticRegression(max_iter=1000).fit(X_train_scaled, y_train)
 
-#Predict using validation set
+#Predict using validation set and calculate error
 y_pred = clf_1.predict(X_val_scaled)
 accuracy = accuracy_score(y_val,y_pred)
-
+val_error = 1 - accuracy_score(y_val, y_pred)
+y_train_pred = clf_1.predict(X_train_scaled)
+train_error = 1 - accuracy_score(y_train, y_train_pred)
 
 #Confusion matrix
 cm= confusion_matrix(y_val,y_pred)
@@ -40,9 +42,12 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',xticklabels=clf_1.classes_, yt
 plt.title('Confusion Matrix')
 plt.ylabel('True Label')
 plt.xlabel('Predicted Label')
-plt.show()
+
 
 #Print
-print(accuracy)
+print(f"Valditaion accuracy: {accuracy}")
+print(f"Training error: {train_error}")
+print(f"Validation error: {val_error}")
 print(cm)
+plt.show()
 
